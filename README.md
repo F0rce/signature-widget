@@ -1,3 +1,6 @@
+![Vaadin Directory](https://img.shields.io/vaadin-directory/status/signature-widget?style=for-the-badge)
+![Vaadin Directory](https://img.shields.io/vaadin-directory/rating/signature-widget?style=for-the-badge)
+
 # Signature Widget
 
 [Signature Pad](https://github.com/szimek/signature_pad) is a JavaScript library for drawing smooth signatures. Now you are able
