@@ -10,7 +10,23 @@ to create and use signatures in **your** Vaadin 14 Project with this custom widg
 
 ## Install
 
-Install the component using [Vaadin Directory](https://vaadin.com/directory/component/signature-widget)
+Install the component using [Vaadin Directory](https://vaadin.com/directory/component/signature-widget):
+
+```xml
+<dependency>
+   <groupId>de.f0rce.signaturepad</groupId>
+   <artifactId>signature-widget</artifactId>
+   <version>1.0.0</version>
+</dependency>
+```
+```xml
+<repository>
+   <id>vaadin-addons</id>
+   <url>https://maven.vaadin.com/vaadin-addons</url>
+</repository>
+```
+
+*Latest Version: v1.0.0*
 
 
 ## Documentation
