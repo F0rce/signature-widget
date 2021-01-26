@@ -1,30 +1,21 @@
-# Paper Slider
+# Signature Widget
 
-Vaadin 14 Java integration of signature_pad
+[Signature Pad](https://github.com/szimek/signature_pad) is a JavaScript library for drawing smooth signatures. Now you are able
+to create and use signatures in **your** Vaadin 14 Project with this custom widget.
 
-## Development instructions
-
-JavaScript modules can either be published as an NPM package or be kept as local 
-files in your project. The local JavaScript modules should be put in 
-`src/main/resources/META-INF/frontend` so that they are automatically found and 
-used in the using application.
-
-If the modules are published then the package should be noted in the component 
-using the `@NpmPackage` annotation in addition to using `@JsModule` annotation.
+**Created** by David "F0rce" Dodlek
 
 
-Starting the test/demo server:
-1. Run `mvn jetty:run`.
-2. Open http://localhost:8080 in the browser.
+## Install
 
-## Publishing to Vaadin Directory
+Install the component using [Vaadin Directory](https://vaadin.com/directory/component/signature-widget)
 
-You can create the zip package needed for [Vaadin Directory](https://vaadin.com/directory/) using
-```
-mvn versions:set -DnewVersion=1.0.0 # You cannot publish snapshot versions 
-mvn install -Pdirectory
-```
 
-The package is created as `target/signature_pad-1.0.0.zip`
+## Documentation
 
-For more information or to upload the package, visit https://vaadin.com/directory/my-components?uploadNewComponent
+[docs.f0rce.de/signature](https://docs.f0rce.de/signature)
+
+
+## License
+
+[MIT License](http://opensource.org/licenses/MIT)
