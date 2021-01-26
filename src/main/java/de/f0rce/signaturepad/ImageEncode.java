@@ -1,13 +1,15 @@
 package de.f0rce.signaturepad;
 
-/**
- * @author David "F0rce" Dodlek
- */
-
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.DomEvent;
 import com.vaadin.flow.component.EventData;
 
+/**
+ * This class is used to listen to the image-encode event sent by the frontend.
+ * It contains the image URI and the MIME-Type.
+ * 
+ * @author David "F0rce" Dodlek
+ */
 @DomEvent("image-encode")
 public class ImageEncode extends ComponentEvent<SignaturePad> {
 

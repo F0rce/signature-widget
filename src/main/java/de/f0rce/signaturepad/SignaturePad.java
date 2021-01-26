@@ -1,9 +1,5 @@
 package de.f0rce.signaturepad;
 
-/**
- * @author David "F0rce" Dodlek
- */
-
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
@@ -12,10 +8,14 @@ import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
 
+/**
+ * Main class with all methods.
+ * 
+ * @author David "F0rce" Dodlek
+ */
 @Tag("signature-widget")
 @JsModule("./@f0rce/signature-widget.js")
 @NpmPackage(value = "signature_pad", version = "3.0.0-beta.4")
-
 public class SignaturePad extends Component {
 
 	private double dotSize;
@@ -40,6 +40,8 @@ public class SignaturePad extends Component {
 		setWidth("300px");
 	}
 
+	// Used to sync the private variables (called after the frontend event has been
+	// fired)
 	private void updateImage(ImageEncode event) {
 		imageUri = event.getImage();
 		type = event.getType();

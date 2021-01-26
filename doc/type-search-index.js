@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"de.f0rce.signaturepad","l":"ImageEncode"},{"p":"de.f0rce.signaturepad","l":"SignaturePad"}]
