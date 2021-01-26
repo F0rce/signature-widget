@@ -221,5 +221,3 @@ dist
 ### Vaadin ###
 .vaadin-designer
 .designer
-
-.classpath
