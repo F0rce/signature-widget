@@ -1,5 +1,6 @@
 ![Vaadin Directory](https://img.shields.io/vaadin-directory/status/signature-widget?style=for-the-badge)
 ![Vaadin Directory](https://img.shields.io/vaadin-directory/rating/signature-widget?style=for-the-badge)
+![Website](https://img.shields.io/website?down_color=red&down_message=offline&label=documentation&style=for-the-badge&up_color=limegreen&up_message=online&url=https%3A%2F%2Fdocs.f0rce.de%2Fsignature)
 
 # Signature Widget
 
