@@ -20,7 +20,7 @@ Install the component using [Vaadin Directory](https://vaadin.com/directory/comp
 <dependency>
    <groupId>de.f0rce.signaturepad</groupId>
    <artifactId>signature-widget</artifactId>
-   <version>1.0.0</version>
+   <version>1.0.1</version>
 </dependency>
 ```
 ```xml
@@ -30,7 +30,7 @@ Install the component using [Vaadin Directory](https://vaadin.com/directory/comp
 </repository>
 ```
 
-*Latest Version: v1.0.0*
+*Latest Version: v1.0.1*
 
 
 ## Documentation
