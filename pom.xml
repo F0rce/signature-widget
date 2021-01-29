@@ -4,9 +4,9 @@
     <groupId>de.f0rce.signaturepad</groupId>
     <artifactId>signature-widget</artifactId>
     
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>signature-widget</name>
-    <description>Polymer 3 wrap around Signature Pad (https://github.com/szimek/signature_pad) for Vaadin Flow</description>
+    <description>Polymer 3 wrap around Signature Pad (https://github.com/szimek/signature_pad) for Vaadin 14</description>
 
     <properties>
         <vaadin.version>14.4.6</vaadin.version>
@@ -32,7 +32,7 @@
         <dependencies>
             <dependency>
                 <groupId>com.vaadin</groupId>
-                <artifactId>vaadin-bom</artifactId>
+                <artifactId>vaadin-core</artifactId>
                 <type>pom</type>
                 <scope>import</scope>
                 <version>${vaadin.version}</version>
