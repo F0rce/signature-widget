@@ -1,6 +1,7 @@
 ![Vaadin Directory](https://img.shields.io/vaadin-directory/status/signature-widget?style=for-the-badge)
 ![Vaadin Directory](https://img.shields.io/vaadin-directory/rating/signature-widget?style=for-the-badge)
 ![Website](https://img.shields.io/website?down_color=red&down_message=offline&label=documentation&style=for-the-badge&up_color=limegreen&up_message=online&url=https%3A%2F%2Fdocs.f0rce.de%2Fsignature)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FF0rce%2Fsignature-widget.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FF0rce%2Fsignature-widget?ref=badge_shield)
 
 # Signature Widget
 
@@ -41,3 +42,6 @@ Install the component using [Vaadin Directory](https://vaadin.com/directory/comp
 ## License
 
 [MIT License](http://opensource.org/licenses/MIT)
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FF0rce%2Fsignature-widget.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FF0rce%2Fsignature-widget?ref=badge_large)
