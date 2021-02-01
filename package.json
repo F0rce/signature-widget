@@ -51,7 +51,7 @@
   "devDependencies": {
     "webpack": "4.42.0",
     "webpack-cli": "3.3.11",
-    "webpack-dev-server": "3.11.0",
+    "webpack-dev-server": "3.11.2",
     "webpack-babel-multi-target-plugin": "2.3.3",
     "copy-webpack-plugin": "5.1.2",
     "webpack-merge": "4.2.2",
@@ -118,7 +118,7 @@
       "webpack": "4.42.0",
       "terser": "4.6.7",
       "webpack-merge": "4.2.2",
-      "webpack-dev-server": "3.11.0",
+      "webpack-dev-server": "3.11.2",
       "chokidar": "^3.4.0"
     },
     "hash": "4dfe318bf83ec54d65185ae2798271a7fd6afcabee6efb724df8f173b9a3d6b0"
