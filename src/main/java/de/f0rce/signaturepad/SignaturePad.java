@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
@@ -13,10 +14,10 @@ import com.vaadin.flow.component.dependency.NpmPackage;
  * 
  * @author David "F0rce" Dodlek
  */
-@Tag("signature-widget")
+@Tag("lit-signature-pad")
 @JsModule("./@f0rce/signature-widget.js")
 @NpmPackage(value = "signature_pad", version = "3.0.0-beta.4")
-public class SignaturePad extends Component {
+public class SignaturePad extends Component implements HasSize {
 
 	private double dotSize;
 	private double lineMinWidth = 0.5;
@@ -30,6 +31,7 @@ public class SignaturePad extends Component {
 	private String type = "image/png";
 	private boolean readOnly = false;
 	private double encoderQuality = 0.85;
+	private boolean isEmpty = true;
 
 	/**
 	 * Default constructor. By default height is set to 100px and width to 300px.
@@ -43,45 +45,10 @@ public class SignaturePad extends Component {
 	// Used to sync the private variables (called after the frontend event has been
 	// fired)
 	private void updateImage(ImageEncode event) {
-		imageUri = event.getImage();
-		type = event.getType();
+		this.imageUri = event.getImage();
+		this.type = event.getType();
+		this.isEmpty = event.isEmpty();
 	};
-
-	/**
-	 * Set the height of the widget in px or percent.
-	 * 
-	 * @param height String
-	 */
-	public void setHeight(String height) {
-		getElement().getStyle().set("height", height);
-	}
-
-	/**
-	 * Returns the current set height of the widget.
-	 * 
-	 * @return String
-	 */
-	public String getHeight() {
-		return getElement().getStyle().get("height");
-	}
-
-	/**
-	 * Set the width of the widget in px or percent.
-	 * 
-	 * @param width String
-	 */
-	public void setWidth(String width) {
-		getElement().getStyle().set("width", width);
-	}
-
-	/**
-	 * Returns the current set width of the widget.
-	 * 
-	 * @return String
-	 */
-	public String getWidth() {
-		return getElement().getStyle().get("width");
-	}
 
 	/**
 	 * Clears the widget.
@@ -250,7 +217,7 @@ public class SignaturePad extends Component {
 	/**
 	 * Sets the background color in hex format.
 	 * 
-	 * @param hex String
+	 * @param hex {@link String}
 	 */
 	public void setBackgroundColor(String hex) {
 		getElement().setProperty("backgroundColor", hex);
@@ -260,7 +227,7 @@ public class SignaturePad extends Component {
 	/**
 	 * Returns the current set background color.
 	 * 
-	 * @return String
+	 * @return {@link String}
 	 */
 	public String getBackgroundColor() {
 		return backgroundColor;
@@ -282,7 +249,7 @@ public class SignaturePad extends Component {
 	/**
 	 * Sets the pen color in hex format.
 	 * 
-	 * @param hex String
+	 * @param hex {@link String}
 	 */
 	public void setPenColor(String hex) {
 		getElement().setProperty("penColor", hex);
@@ -292,7 +259,7 @@ public class SignaturePad extends Component {
 	/**
 	 * Returns the current set pen color.
 	 * 
-	 * @return String
+	 * @return {@link String}
 	 */
 	public String getPenColor() {
 		return penColor;
@@ -333,7 +300,7 @@ public class SignaturePad extends Component {
 	/**
 	 * Returns the current shown image in URI format.
 	 * 
-	 * @return String
+	 * @return {@link String}
 	 */
 	public String getImageURI() {
 		return this.imageUri;
@@ -355,7 +322,7 @@ public class SignaturePad extends Component {
 	/**
 	 * Sets the MIME-Type for the image encoder. Has to start with "image/"!
 	 * 
-	 * @param type String
+	 * @param type {@link String}
 	 */
 	public void setType(String type) {
 		if (!type.contains("image/")) {
@@ -368,7 +335,7 @@ public class SignaturePad extends Component {
 	/**
 	 * Returns the current set MIME-Type. Defaults to image/png.
 	 * 
-	 * @return String
+	 * @return {@link String}
 	 */
 	public String getType() {
 		return this.type;
@@ -396,7 +363,7 @@ public class SignaturePad extends Component {
 	/**
 	 * Sets the image of the widget in URI Format.
 	 * 
-	 * @param uri String
+	 * @param uri {@link String}
 	 */
 	public void setImage(String uri) {
 		getElement().setProperty("img", uri);
@@ -421,7 +388,7 @@ public class SignaturePad extends Component {
 	/**
 	 * Returns the current set encoder quality.
 	 * 
-	 * @return double.
+	 * @return double
 	 */
 	public double getEncoderQuality() {
 		return this.encoderQuality;
@@ -432,6 +399,22 @@ public class SignaturePad extends Component {
 	 */
 	public void undo() {
 		getElement().callJsFunction("undo");
+	}
+
+	/**
+	 * Returns if the widget is empty.
+	 * 
+	 * @return boolean
+	 */
+	public boolean isEmpty() {
+		return this.isEmpty;
+	}
+
+	/**
+	 * Sets the background color transparent.
+	 */
+	public void setTransparentBackground() {
+		getElement().setProperty("backgroundColor", "rgb(255, 255, 255)");
 	}
 
 }

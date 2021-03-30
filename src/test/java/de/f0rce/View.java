@@ -14,8 +14,7 @@ public class View extends Div {
 		SignaturePad signature = new SignaturePad();
 		signature.setHeight("300px");
 		signature.setWidth("300px");
-		signature.setBackgroundColor("#000000");
-		signature.setPenColor("#FFFFFF");
+		signature.setTransparentBackground();
 
 		Button button = new Button("RO T");
 		Button button2 = new Button("RO F");
@@ -37,11 +36,11 @@ public class View extends Div {
 		});
 
 		button.addClickListener(event -> {
-			signature.undo();
+			System.out.println(signature.isEmpty());
 		});
 
 		button2.addClickListener(event -> {
-			signature.setReadOnly(false);
+
 		});
 	}
 }

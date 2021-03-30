@@ -1,137 +1,102 @@
+/**
+@license MIT
+Copyright 2021 David "F0rce" Dodlek
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+import { LitElement, html, css } from "lit-element";
+
 import SignaturePad from "signature_pad";
 
-import { PolymerElement, html } from "@polymer/polymer/polymer-element.js";
-
-class SignatureWidget extends PolymerElement {
-  static get is() {
-    return "signature-widget";
-  }
-
-  static get template() {
-    return html`
-      <style>
-        :host {
-          display: block;
-        }
-        #signature {
-          border: 1px solid var(--lumo-contrast-20pct);
-          border-radius: var(--lumo-border-radius-s);
-          width: 100%;
-          height: 100%;
-        }
-      </style>
-      <canvas id="signature"></canvas>
-    `;
-  }
-
+class LitSignaturePad extends LitElement {
   static get properties() {
     return {
-      dotSize: {
-        type: String,
-        observer: "_dotSizeChanged",
-      },
-
-      minWidth: {
-        type: Number,
-        value: 0.5,
-        observer: "_minWidthChanged",
-      },
-
-      maxWidth: {
-        type: Number,
-        value: 2.5,
-        observer: "_maxWidthChanged",
-      },
-
-      throttle: {
-        type: Number,
-        value: 16,
-        observer: "_throttleChanged",
-      },
-
-      minDistance: {
-        type: Number,
-        value: 5,
-        observer: "_minDistanceChanged",
-      },
-
-      backgroundColor: {
-        type: String,
-        value: "#ffffff",
-        observer: "_backgroundColorChanged",
-      },
-
-      penColor: {
-        type: String,
-        value: "#000000",
-        observer: "_penColorChanged",
-      },
-
-      velocityFilterWeight: {
-        type: Number,
-        value: 0.7,
-        observer: "_velocityFilterWeightChanged",
-      },
-
-      type: {
-        type: String,
-        value: "image/png",
-      },
-
-      encoderOptions: {
-        type: Number,
-        value: 0.85,
-      },
-
-      image: {
-        type: String,
-        notify: true,
-      },
-
-      active: {
-        type: Boolean,
-        notify: true,
-        readOnly: true,
-      },
-
-      empty: {
-        type: Boolean,
-        notify: true,
-        readOnly: true,
-      },
-
-      readOnly: {
-        type: Boolean,
-        value: false,
-        observer: "_readOnlyChanged",
-      },
-
-      img: {
-        type: String,
-        observer: "_imgChanged",
-      },
+      dotSize: { type: String },
+      minWidth: { type: Number },
+      maxWidth: { type: Number },
+      throttle: { type: Number },
+      minDistance: { type: Number },
+      backgroundColor: { type: String },
+      penColor: { type: String },
+      velocityFilterWeight: { type: Number },
+      type: { type: String },
+      encoderOptions: { type: Number },
+      image: { type: String },
+      empty: { type: Boolean },
+      readOnly: { type: Boolean },
+      img: { type: String },
     };
   }
 
-  static get observers() {
-    return ["_onEncodingChanged(type, encoderOptions)"];
+  constructor() {
+    super();
+    this.minWidth = 0.5;
+    this.maxWidth = 2.5;
+    this.throttle = 16;
+    this.minDistance = 5;
+    this.backgroundColor = "#ffffff";
+    this.penColor = "#000000";
+    this.velocityFilterWeight = 0.7;
+    this.type = "image/png";
+    this.encoderOptions = 0.85;
+    this.readOnly = false;
   }
 
-  connectedCallback() {
-    super.connectedCallback();
+  static get styles() {
+    return css`
+      :host {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+      #signature {
+        border: 1px solid var(--lumo-contrast-20pct);
+        border-radius: var(--lumo-border-radius-s);
+        width: 100%;
+        height: 100%;
+      }
+    `;
+  }
 
-    console.log("HELLO DID THIS")
+  render() {
+    return html` <canvas id="signature"></canvas> `;
+  }
+
+  firstUpdated() {
+    this.signatureCanvas = this.shadowRoot.getElementById("signature");
+    console.log(this.signatureCanvas);
 
     var ratio = Math.max(window.devicePixelRatio || 1, 1);
-    this.$.signature.width = this.$.signature.offsetWidth * ratio;
-    this.$.signature.height = this.$.signature.offsetHeight * ratio;
-    this.$.signature.getContext("2d").scale(ratio, ratio);
+    this.signatureCanvas.width = this.signatureCanvas.offsetWidth * ratio;
+    this.signatureCanvas.height = this.signatureCanvas.offsetHeight * ratio;
+    this.signatureCanvas.getContext("2d").scale(ratio, ratio);
+
+    let self = this;
+    this.observer = new ResizeObserver(function (entries) {
+      entries.forEach(function (entry) {
+        self.resizeSignature();
+      });
+    });
 
     this.initSignaturePad();
   }
 
+  updated(changedProperties) {
+    changedProperties.forEach((oldValue, propName) => {
+      if (propName == "type" || propName == "encoderOptions") {
+        return this.onEncodingChanged();
+      }
+      let funcToCall = propName + "Changed";
+      if (typeof this[funcToCall] == "function") {
+        this[funcToCall]();
+      }
+    });
+  }
+
   initSignaturePad() {
-    this.signaturePad = new SignaturePad(this.$.signature, {
+    this.signaturePad = new SignaturePad(this.signatureCanvas, {
       dotSize: this.dotSize,
       minWidth: this.minWidth,
       maxWidth: this.maxWidth,
@@ -139,8 +104,8 @@ class SignatureWidget extends PolymerElement {
       backgroundColor: this.backgroundColor,
       penColor: this.penColor,
       velocityFilterWeight: this.velocityFilterWeight,
-      onBegin: this._onBegin.bind(this),
-      onEnd: this._onEnd.bind(this),
+      minDistance: this.minDistance,
+      onEnd: this.onEnd.bind(this),
     });
 
     this.signaturePad.clear();
@@ -148,8 +113,6 @@ class SignatureWidget extends PolymerElement {
     if (this.image) {
       this.signaturePad.fromDataURL(this.image);
     }
-
-    this._setEmpty(this.signaturePad.isEmpty());
   }
 
   clear() {
@@ -167,68 +130,66 @@ class SignatureWidget extends PolymerElement {
   }
 
   encodeImage() {
-    this.image = this.$.signature.toDataURL(this.type, this.encodingOptions);
-    this._setEmpty(this.signaturePad.isEmpty());
+    this.image = this.signatureCanvas.toDataURL(
+      this.type,
+      this.encodingOptions
+    );
     this.dispatchEvent(
       new CustomEvent("image-encode", {
         detail: {
           image: this.image,
           type: this.type,
+          isEmpty: this.signaturePad.isEmpty(),
         },
       })
     );
   }
 
-  _onBegin(event) {
-    this._setActive(true);
-  }
-
-  _onEnd(event) {
-    this._setActive(false);
+  onEnd(event) {
     this.encodeImage();
   }
 
-  _dotSizeChanged(newValue, oldValue) {
+  dotSizeChanged() {
     if (!this.signaturePad) return;
-    this.signaturePad.dotSize = newValue;
+    this.signaturePad.dotSize = this.dotSize;
   }
 
-  _minWidthChanged(newValue, oldValue) {
+  minWidthChanged() {
     if (!this.signaturePad) return;
-    this.signaturePad.minWidth = newValue;
+    this.signaturePad.minWidth = this.minWidth;
   }
 
-  _maxWidthChanged(newValue, oldValue) {
+  maxWidthChanged() {
     if (!this.signaturePad) return;
-    this.signaturePad.maxWidth = newValue;
+    this.signaturePad.maxWidth = this.maxWidth;
   }
 
-  _throttleChanged(newValue, oldValue) {
+  throttleChanged() {
     if (!this.signaturePad) return;
-    this.signaturePad.throttle = newValue;
+    this.signaturePad.throttle = this.throttle;
   }
 
-  _minDistanceChanged(newValue, oldValue) {
+  minDistanceChanged() {
     if (!this.signaturePad) return;
-    this.signaturePad.minDistance = newValue;
+    this.signaturePad.minDistance = this.minDistance;
   }
 
-  _backgroundColorChanged(newValue, oldValue) {
+  backgroundColorChanged() {
     if (!this.signaturePad) return;
-    this.signaturePad.backgroundColor = newValue;
+    this.signaturePad.backgroundColor = this.backgroundColor;
   }
 
-  _penColorChanged(newValue, oldValue) {
+  penColorChanged() {
     if (!this.signaturePad) return;
-    this.signaturePad.penColor = newValue;
+    this.signaturePad.penColor = this.penColor;
   }
 
-  _velocityFilterWeightChanged(newValue, oldValue) {
+  velocityFilterWeightChanged() {
     if (!this.signaturePad) return;
-    this.signaturePad.velocityFilterWeight = newValue;
+    this.signaturePad.velocityFilterWeight = this.velocityFilterWeight;
   }
 
-  _readOnlyChanged(newValue, oldValue) {
+  readOnlyChanged() {
     if (!this.signaturePad) return;
     if (this.readOnly === true) {
       this.signaturePad.off();
@@ -237,16 +198,23 @@ class SignatureWidget extends PolymerElement {
     }
   }
 
-  _imgChanged(newValue, oldValue) {
-    this.signaturePad.fromDataURL(newValue);
+  imgChanged() {
+    this.signaturePad.fromDataURL(this.img);
     this.encodeImage();
   }
 
-  _onEncodingChanged(type, encoderOptions) {
+  onEncodingChanged() {
     if (this.signaturePad) {
       this.encodeImage();
     }
   }
+
+  resizeSignature() {
+    var ratio = Math.max(window.devicePixelRatio || 1, 1);
+    this.signatureCanvas.width = this.signatureCanvas.offsetWidth * ratio;
+    this.signatureCanvas.height = this.signatureCanvasa.offsetHeight * ratio;
+    this.signatureCanvas.getContext("2d").scale(ratio, ratio);
+  }
 }
 
-customElements.define(SignatureWidget.is, SignatureWidget);
+customElements.define("lit-signature-pad", LitSignaturePad);
