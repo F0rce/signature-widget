@@ -52,7 +52,7 @@
       "webpack": "4.42.0",
       "ts-loader": "8.0.12",
       "chokidar": "^3.5.0",
-      "webpack-merge": "4.2.2",
+      "webpack-merge": "5.8.0",
       "typescript": "4.0.3",
       "webpack-dev-server": "3.11.0"
     },
@@ -108,7 +108,7 @@
     "webpack": "4.42.0",
     "ts-loader": "8.0.12",
     "chokidar": "^3.5.0",
-    "webpack-merge": "4.2.2",
+    "webpack-merge": "5.8.0",
     "typescript": "4.0.3",
     "webpack-dev-server": "3.11.0"
   }
