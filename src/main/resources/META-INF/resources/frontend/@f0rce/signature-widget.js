@@ -5,15 +5,13 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-
 import { LitElement, html, css } from "lit-element";
 
 import SignaturePad from "signature_pad";
-
 class LitSignaturePad extends LitElement {
   static get properties() {
     return {
-      dotSize: { type: String },
+      dotSize: { type: Number },
       minWidth: { type: Number },
       maxWidth: { type: Number },
       throttle: { type: Number },
@@ -66,7 +64,6 @@ class LitSignaturePad extends LitElement {
 
   firstUpdated() {
     this.signatureCanvas = this.shadowRoot.getElementById("signature");
-    console.log(this.signatureCanvas);
 
     var ratio = Math.max(window.devicePixelRatio || 1, 1);
     this.signatureCanvas.width = this.signatureCanvas.offsetWidth * ratio;
@@ -80,6 +77,18 @@ class LitSignaturePad extends LitElement {
       });
     });
 
+    let intersectionObserver = new IntersectionObserver(function (
+      entries,
+      observer
+    ) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          self.resizeSignature();
+        }
+      });
+    });
+
+    intersectionObserver.observe(this.signatureCanvas);
     this.initSignaturePad();
   }
 
@@ -105,24 +114,22 @@ class LitSignaturePad extends LitElement {
       penColor: this.penColor,
       velocityFilterWeight: this.velocityFilterWeight,
       minDistance: this.minDistance,
-      onEnd: this.onEnd.bind(this),
+      onEnd: this.encodeImage.bind(this),
     });
 
     this.signaturePad.clear();
-
-    if (this.image) {
-      this.signaturePad.fromDataURL(this.image);
-    }
   }
 
   clear() {
+    if (!this.signaturePad) return;
     this.signaturePad.clear();
     this.encodeImage();
   }
 
   undo() {
+    if (!this.signaturePad) return;
     var data = this.signaturePad.toData();
-    if (data) {
+    if (data.length !== 0) {
       data.pop();
       this.signaturePad.fromData(data);
       this.encodeImage();
@@ -130,23 +137,17 @@ class LitSignaturePad extends LitElement {
   }
 
   encodeImage() {
-    this.image = this.signatureCanvas.toDataURL(
-      this.type,
-      this.encodingOptions
-    );
+    if (!this.signaturePad) return;
+    var uri = this.signaturePad.toDataURL(this.type, this.encodingOptions);
     this.dispatchEvent(
       new CustomEvent("image-encode", {
         detail: {
-          image: this.image,
+          image: uri,
           type: this.type,
           isEmpty: this.signaturePad.isEmpty(),
         },
       })
     );
-  }
-
-  onEnd(event) {
-    this.encodeImage();
   }
 
   dotSizeChanged() {
@@ -199,21 +200,23 @@ class LitSignaturePad extends LitElement {
   }
 
   imgChanged() {
+    if (!this.signaturePad) return;
     this.signaturePad.fromDataURL(this.img);
     this.encodeImage();
   }
 
   onEncodingChanged() {
-    if (this.signaturePad) {
-      this.encodeImage();
-    }
+    if (!this.signaturePad) return;
+    this.encodeImage();
   }
 
   resizeSignature() {
+    var dataUrl = this.signaturePad.toDataURL(this.type, this.encoderOptions);
     var ratio = Math.max(window.devicePixelRatio || 1, 1);
     this.signatureCanvas.width = this.signatureCanvas.offsetWidth * ratio;
-    this.signatureCanvas.height = this.signatureCanvasa.offsetHeight * ratio;
+    this.signatureCanvas.height = this.signatureCanvas.offsetHeight * ratio;
     this.signatureCanvas.getContext("2d").scale(ratio, ratio);
+    this.signaturePad.fromDataURL(dataUrl);
   }
 }
 

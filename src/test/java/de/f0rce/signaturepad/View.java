@@ -3,20 +3,22 @@ package de.f0rce.signaturepad;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.Route;
 
 @Route("")
 public class View extends Div {
 
 	public View() {
-		SignaturePad signature = new SignaturePad();
-		signature.setHeight("300px");
-		signature.setWidth("300px");
-		signature.setBackgroundColor("#000000");
-		signature.setPenColor("#FFFFFF");
+		HorizontalLayout vl = new HorizontalLayout();
 
-		Button button = new Button("RO T");
-		Button button2 = new Button("RO F");
+		SignaturePad signature = new SignaturePad();
+		signature.setHeight("100px");
+		signature.setWidth("300px");
+
+		Button button = new Button("Undo");
+		Button button2 = new Button("Save");
 
 		Dialog dialog = new Dialog();
 		dialog.setSizeFull();
@@ -24,11 +26,15 @@ public class View extends Div {
 		dialog.setCloseOnEsc(true);
 		dialog.setResizable(true);
 
-		dialog.add(signature, button, button2);
+		Image sign = new Image();
 
-		Button button3 = new Button("ÖFFE MICH :()");
+		vl.add(signature, sign);
 
-		add(dialog, button3);
+		dialog.add(vl, button, button2);
+
+		Button button3 = new Button("Open Sign Dialog");
+
+		this.add(dialog, button3);
 
 		button3.addClickListener(event -> {
 			dialog.open();
@@ -39,7 +45,7 @@ public class View extends Div {
 		});
 
 		button2.addClickListener(event -> {
-			signature.setReadOnly(false);
+			sign.setSrc(signature.getImageURI());
 		});
 	}
 }
