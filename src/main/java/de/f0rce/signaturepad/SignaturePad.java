@@ -12,7 +12,7 @@ import com.vaadin.flow.component.dependency.NpmPackage;
 /** @author David "F0rce" Dodlek */
 @Tag("lit-signature-pad")
 @JsModule("./@f0rce/signature-widget.js")
-@NpmPackage(value = "signature_pad", version = "3.0.0-beta.3")
+@NpmPackage(value = "signature_pad", version = "4.0.4")
 public class SignaturePad extends Component implements HasSize {
 
   private double dotSize;
@@ -43,7 +43,6 @@ public class SignaturePad extends Component implements HasSize {
     this.type = event.getType();
     this.isEmpty = event.isEmpty();
   }
-  ;
 
   /** Clears the widget. */
   public void clear() {
