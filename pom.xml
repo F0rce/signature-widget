@@ -5,15 +5,15 @@
 	<groupId>de.f0rce.signaturepad</groupId>
 	<artifactId>signature-widget</artifactId>
 
-	<version>2.0.2</version>
+	<version>3.0.0</version>
 	<name>signature-widget</name>
 	<description>Lit-Element Wrapper around Signature Pad (https://github.com/szimek/signature_pad) for Vaadin 14+</description>
 
 	<properties>
-		<vaadin.version>14.8.8</vaadin.version>
+		<vaadin.version>23.0.5</vaadin.version>
 
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
