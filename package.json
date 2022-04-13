@@ -2,7 +2,7 @@
   "name": "no-name",
   "license": "UNLICENSED",
   "dependencies": {
-    "@polymer/iron-a11y-announcer": "3.0.2",
+    "@polymer/iron-a11y-announcer": "3.2.0",
     "@polymer/iron-a11y-keys-behavior": "3.0.1",
     "@polymer/iron-fit-behavior": "3.0.2",
     "@polymer/iron-flex-layout": "3.0.1",
@@ -91,7 +91,7 @@
   },
   "vaadin": {
     "dependencies": {
-      "@polymer/iron-a11y-announcer": "3.0.2",
+      "@polymer/iron-a11y-announcer": "3.2.0",
       "@polymer/iron-a11y-keys-behavior": "3.0.1",
       "@polymer/iron-fit-behavior": "3.0.2",
       "@polymer/iron-flex-layout": "3.0.1",
