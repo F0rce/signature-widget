@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>de.f0rce.signaturepad</groupId>
 	<artifactId>signature-widget</artifactId>
 
-	<version>2.0.1</version>
+	<version>2.0.2</version>
 	<name>signature-widget</name>
-	<description>Lit-Element wrap around Signature Pad (https://github.com/szimek/signature_pad) for Vaadin 14+</description>
+	<description>Lit-Element Wrapper around Signature Pad (https://github.com/szimek/signature_pad) for Vaadin 14+</description>
 
 	<properties>
-		<vaadin.version>14.8.2</vaadin.version>
+		<vaadin.version>14.8.8</vaadin.version>
 
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -26,8 +24,8 @@
 	</organization>
 	<licenses>
 		<license>
-			<name>Apache 2</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<name>MIT</name>
+			<url>https://opensource.org/licenses/MIT</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
