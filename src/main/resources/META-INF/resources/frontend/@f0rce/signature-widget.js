@@ -21,8 +21,6 @@ class LitSignaturePad extends LitElement {
       velocityFilterWeight: { type: Number },
       type: { type: String },
       encoderOptions: { type: Number },
-      image: { type: String },
-      empty: { type: Boolean },
       readOnly: { type: Boolean },
       img: { type: String },
     };
