@@ -169,6 +169,8 @@ class LitSignaturePad extends LitElement {
     this.signaturePad.addEventListener("endStroke", () => {
       this.encodeImage();
     });
+
+    this.signaturePad.clear();
   }
 
   clear() {
@@ -258,20 +260,8 @@ class LitSignaturePad extends LitElement {
   }
 
   imgChanged() {
-    console.log("try setting image");
     if (!this.signaturePad) return;
-    console.log(this.img);
-    console.log("set image");
-    try {
-      this.signaturePad.fromDataURL(this.img, {
-        width: 100,
-        height: 100,
-      });
-    } catch (e) {
-      // ignore and return
-      return;
-    }
-    console.log(this.signaturePad.toData);
+    this.signaturePad.fromDataURL(this.img);
     this.encodeImage();
   }
 
@@ -290,7 +280,6 @@ class LitSignaturePad extends LitElement {
   }
 
   resizeSignature() {
-    console.log("RESIZE");
     var ratio = Math.max(window.devicePixelRatio || 1, 1);
     this.signatureCanvas.width = this.signatureCanvas.offsetWidth * ratio;
     this.signatureCanvas.height = this.signatureCanvas.offsetHeight * ratio;

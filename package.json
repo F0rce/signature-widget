@@ -21,7 +21,6 @@
     "@vaadin/component-base": "23.3.7",
     "@vaadin/confirm-dialog": "23.3.7",
     "@vaadin/context-menu": "23.3.7",
-    "@vaadin/cookie-consent": "23.3.7",
     "@vaadin/custom-field": "23.3.7",
     "@vaadin/date-picker": "23.3.7",
     "@vaadin/date-time-picker": "23.3.7",
@@ -70,7 +69,6 @@
     "@vaadin/vaadin-combo-box": "23.3.7",
     "@vaadin/vaadin-confirm-dialog": "23.3.7",
     "@vaadin/vaadin-context-menu": "23.3.7",
-    "@vaadin/vaadin-cookie-consent": "23.3.7",
     "@vaadin/vaadin-custom-field": "23.3.7",
     "@vaadin/vaadin-date-picker": "23.3.7",
     "@vaadin/vaadin-date-time-picker": "23.3.7",
@@ -148,7 +146,6 @@
       "@vaadin/component-base": "23.3.7",
       "@vaadin/confirm-dialog": "23.3.7",
       "@vaadin/context-menu": "23.3.7",
-      "@vaadin/cookie-consent": "23.3.7",
       "@vaadin/custom-field": "23.3.7",
       "@vaadin/date-picker": "23.3.7",
       "@vaadin/date-time-picker": "23.3.7",
@@ -197,7 +194,6 @@
       "@vaadin/vaadin-combo-box": "23.3.7",
       "@vaadin/vaadin-confirm-dialog": "23.3.7",
       "@vaadin/vaadin-context-menu": "23.3.7",
-      "@vaadin/vaadin-cookie-consent": "23.3.7",
       "@vaadin/vaadin-custom-field": "23.3.7",
       "@vaadin/vaadin-date-picker": "23.3.7",
       "@vaadin/vaadin-date-time-picker": "23.3.7",
@@ -254,7 +250,7 @@
       "workbox-core": "6.5.4",
       "workbox-precaching": "6.5.4"
     },
-    "hash": "c6f4c2268da225d0e1e999f8c656f738d1422690e46ffbadca3eded7d0079327"
+    "hash": "30eb873108873d7c2f6358fce9e3112fc6ea7f3f8d10059de0c19cc1cdb9e4fe"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
@@ -362,8 +358,6 @@
     "lit": "$lit",
     "@polymer/polymer": "$@polymer/polymer",
     "signature_pad": "$signature_pad",
-    "@vaadin/cookie-consent": "$@vaadin/cookie-consent",
-    "date-fns": "$date-fns",
-    "@vaadin/vaadin-cookie-consent": "$@vaadin/vaadin-cookie-consent"
+    "date-fns": "$date-fns"
   }
 }
