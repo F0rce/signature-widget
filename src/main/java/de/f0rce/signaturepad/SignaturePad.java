@@ -2,18 +2,21 @@ package de.f0rce.signaturepad;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
+import com.vaadin.flow.shared.Registration;
 
 /** @author David "F0rce" Dodlek */
 @Tag("lit-signature-pad")
 @JsModule("./@f0rce/signature-widget.js")
-@NpmPackage(value = "signature_pad", version = "4.0.4")
+@NpmPackage(value = "signature_pad", version = "4.1.5")
 public class SignaturePad extends Component implements HasSize {
+
+  private static final long serialVersionUID = -1080064546349497798L;
 
   private double dotSize;
   private double lineMinWidth = 0.5;
@@ -28,6 +31,7 @@ public class SignaturePad extends Component implements HasSize {
   private boolean readOnly = false;
   private double encoderQuality = 0.85;
   private boolean isEmpty = true;
+  private boolean clearButtonVisible = true;
 
   /** Default constructor. By default height is set to 100px and width to 300px. */
   public SignaturePad() {
@@ -42,6 +46,12 @@ public class SignaturePad extends Component implements HasSize {
     this.imageUri = event.getImage();
     this.type = event.getType();
     this.isEmpty = event.isEmpty();
+
+    if (!this.imageUri.equals(event.getImage())) {
+      this.fireEvent(
+          new ValueChangedEvent(
+              event.getSource(), true, event.getImage(), event.getType(), event.isEmpty()));
+    }
   }
 
   /** Clears the widget. */
@@ -359,7 +369,11 @@ public class SignaturePad extends Component implements HasSize {
    */
   public void setImage(String uri) {
     this.getElement().setProperty("img", uri);
+    if (!this.imageUri.equals(uri)) {
+      this.fireEvent(new ValueChangedEvent(this, false, uri, this.type, false));
+    }
     this.imageUri = uri;
+    this.isEmpty = false;
   }
 
   /**
@@ -402,5 +416,36 @@ public class SignaturePad extends Component implements HasSize {
   /** Sets the background color transparent. */
   public void setTransparentBackground() {
     this.getElement().setProperty("backgroundColor", "rgb(255, 255, 255)");
+  }
+
+  /**
+   * Set the clear button's (top right) visibility.
+   *
+   * @param clearButtonVisible boolean
+   */
+  public void setClearButtonVisible(boolean clearButtonVisible) {
+    this.getElement().setProperty("clearButtonVisible", clearButtonVisible);
+    this.clearButtonVisible = clearButtonVisible;
+  }
+
+  /**
+   * Returns if the clear button is visible.
+   *
+   * @return boolean
+   */
+  public boolean isClearButtonVisible() {
+    return this.clearButtonVisible;
+  }
+
+  /**
+   * Add a listener to the editor, which listens to when the value changed.
+   *
+   * <p>Check {@link ValueChangedEvent} for all available returned values.
+   *
+   * @param listener {@link ComponentEventListener}
+   * @return {@link Registration}
+   */
+  public Registration addValueChangeListener(ComponentEventListener<ValueChangedEvent> listener) {
+    return this.addListener(ValueChangedEvent.class, listener);
   }
 }

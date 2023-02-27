@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0](https://github.com/F0rce/signature-widget/compare/v3.0.0...v3.1.0) (2023-02-27)
+
+
+### Features
+
+* clear button ([a110d3f](https://github.com/F0rce/signature-widget/commit/a110d3fa7aa5ae9960c4adc9f0dbf80d8b985c8a))
+* value change listener ([b77392c](https://github.com/F0rce/signature-widget/commit/b77392cd32f5519b2bd9fd132514290af1344244)), closes [#308](https://github.com/F0rce/signature-widget/issues/308)
+
 ## [3.0.0](https://github.com/F0rce/signature-widget/compare/v2.0.2...v3.0.0) (2022-04-13)
 
 

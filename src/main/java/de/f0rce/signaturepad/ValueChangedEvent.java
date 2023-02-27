@@ -1,31 +1,21 @@
 package de.f0rce.signaturepad;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import com.vaadin.flow.component.ComponentEvent;
-import com.vaadin.flow.component.DomEvent;
-import com.vaadin.flow.component.EventData;
 
-/**
- * This class is used to listen to the image-encode event sent by the frontend. It contains the
- * image URI and the MIME-Type.
- *
- * @author David "F0rce" Dodlek
- */
-@DomEvent("image-encode")
-public class ImageEncode extends ComponentEvent<SignaturePad> {
+/** @author David "F0rce" Dodlek */
+public class ValueChangedEvent extends ComponentEvent<SignaturePad> {
 
   /** */
-  private static final long serialVersionUID = 1415144317253118264L;
+  private static final long serialVersionUID = 1280906391516162475L;
 
   private String image;
   private String type;
   private boolean isEmpty;
 
-  public ImageEncode(
-      SignaturePad source,
-      boolean fromClient,
-      @EventData("event.detail.image") String image,
-      @EventData("event.detail.type") String type,
-      @EventData("event.detail.isEmpty") boolean isEmpty) {
+  public ValueChangedEvent(
+      SignaturePad source, boolean fromClient, String image, String type, boolean isEmpty) {
     super(source, fromClient);
     this.image = image;
     this.type = type;
@@ -39,6 +29,19 @@ public class ImageEncode extends ComponentEvent<SignaturePad> {
    */
   public String getImage() {
     return this.image;
+  }
+
+  /**
+   * Returns the dataurl of the encoded image as Base64 decoded byte array.
+   *
+   * @return byte[]
+   */
+  public byte[] getImageBase64() {
+    if (this.image.equals("") || this.isEmpty) {
+      return null;
+    }
+    String split = this.image.split(",")[1];
+    return Base64.getDecoder().decode(split.getBytes(StandardCharsets.UTF_8));
   }
 
   /**
