@@ -13,6 +13,9 @@ import com.vaadin.flow.component.EventData;
 @DomEvent("image-encode")
 public class ImageEncode extends ComponentEvent<SignaturePad> {
 
+  /** */
+  private static final long serialVersionUID = 1415144317253118264L;
+
   private String image;
   private String type;
   private boolean isEmpty;
@@ -22,7 +25,7 @@ public class ImageEncode extends ComponentEvent<SignaturePad> {
       boolean fromClient,
       @EventData("event.detail.image") String image,
       @EventData("event.detail.type") String type,
-      @EventData("event.detail.isEmpty") Boolean isEmpty) {
+      @EventData("event.detail.isEmpty") boolean isEmpty) {
     super(source, fromClient);
     this.image = image;
     this.type = type;

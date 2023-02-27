@@ -5,7 +5,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-import { LitElement, html, css } from "lit-element";
+import { LitElement, html, css } from "lit";
 
 import SignaturePad from "signature_pad";
 class LitSignaturePad extends LitElement {
@@ -23,6 +23,7 @@ class LitSignaturePad extends LitElement {
       encoderOptions: { type: Number },
       readOnly: { type: Boolean },
       img: { type: String },
+      clearButtonVisible: { type: Boolean },
     };
   }
 
@@ -38,6 +39,7 @@ class LitSignaturePad extends LitElement {
     this.type = "image/png";
     this.encoderOptions = 0.85;
     this.readOnly = false;
+    this.clearButtonVisible = true;
   }
 
   static get styles() {
@@ -50,23 +52,60 @@ class LitSignaturePad extends LitElement {
       #signature {
         border: 1px solid var(--lumo-contrast-20pct);
         border-radius: var(--lumo-border-radius-s);
+        position: absolute;
+        left: 0;
+        top: 0;
         width: 100%;
         height: 100%;
+      }
+      #clearButton {
+        display: none;
+        z-index: 9;
+        position: absolute;
+        width: 1em;
+        height: 1em;
+        line-height: 1;
+        top: 0.25em;
+        right: 0.25em;
+        font-size: var(--lumo-icon-size-m);
+        text-align: center;
+        color: var(--lumo-contrast-60pct);
+        transition: 0.2s color;
+        cursor: var(--lumo-clickable-cursor);
+      }
+      #clearButton.visible {
+        display: block;
+        cursor: var(--lumo-clickable-cursor);
+      }
+      #clearButton::before {
+        content: var(--lumo-icons-cross);
+        font-family: "lumo-icons";
+        display: block;
+      }
+      #clearButton:hover {
+        color: var(--lumo-contrast-90pct);
+      }
+      #clearButton.disabled {
+        display: none !important;
       }
     `;
   }
 
   render() {
-    return html` <canvas id="signature"></canvas> `;
+    return html`
+      <div
+        id="signatureWrapper"
+        style="height: 100%; width: 100%; position: relative; -moz-user-select: none; -webkit-user-select: none; -mz-user-select: none; user-select: none;"
+      >
+        <canvas id="signature"></canvas>
+        <div id="clearButton" @click="${this.onClearButton}"></div>
+      </div>
+    `;
   }
 
   firstUpdated() {
     this.signatureCanvas = this.shadowRoot.getElementById("signature");
-
-    var ratio = Math.max(window.devicePixelRatio || 1, 1);
-    this.signatureCanvas.width = this.signatureCanvas.offsetWidth * ratio;
-    this.signatureCanvas.height = this.signatureCanvas.offsetHeight * ratio;
-    this.signatureCanvas.getContext("2d").scale(ratio, ratio);
+    this.clearButton = this.shadowRoot.getElementById("clearButton");
 
     let self = this;
     this.observer = new ResizeObserver(function (entries) {
@@ -87,19 +126,23 @@ class LitSignaturePad extends LitElement {
     });
 
     intersectionObserver.observe(this.signatureCanvas);
+
     this.initSignaturePad();
   }
 
   updated(changedProperties) {
-    changedProperties.forEach((oldValue, propName) => {
-      if (propName == "type" || propName == "encoderOptions") {
-        return this.onEncodingChanged();
+    for (let i = 0; i < changedProperties.size; i++) {
+      var toUpdate = Array.from(changedProperties.keys())[i];
+      if (toUpdate == "type" || toUpdate == "encoderOptions") {
+        this.onEncodingChanged();
+        return;
       }
-      let funcToCall = propName + "Changed";
+
+      var funcToCall = toUpdate + "Changed";
       if (typeof this[funcToCall] == "function") {
-        this[funcToCall]();
+        this[funcToCall](); // This line is freaking cool
       }
-    });
+    }
   }
 
   initSignaturePad() {
@@ -114,6 +157,15 @@ class LitSignaturePad extends LitElement {
       minDistance: this.minDistance,
     });
 
+    var ratio = Math.max(window.devicePixelRatio || 1, 1);
+    this.signatureCanvas.width = this.signatureCanvas.offsetWidth * ratio;
+    this.signatureCanvas.height = this.signatureCanvas.offsetHeight * ratio;
+    this.signatureCanvas.getContext("2d").scale(ratio, ratio);
+
+    this.signaturePad.addEventListener("beginStroke", () => {
+      this.clearButton.classList.add("visible");
+    });
+
     this.signaturePad.addEventListener("endStroke", () => {
       this.encodeImage();
     });
@@ -124,6 +176,7 @@ class LitSignaturePad extends LitElement {
   clear() {
     if (!this.signaturePad) return;
     this.signaturePad.clear();
+    this.clearButton.classList.remove("visible");
     this.encodeImage();
   }
 
@@ -135,10 +188,14 @@ class LitSignaturePad extends LitElement {
       this.signaturePad.fromData(data);
       this.encodeImage();
     }
+    if (data.length === 0) {
+      this.clearButton.classList.remove("visible");
+    }
   }
 
   encodeImage() {
     if (!this.signaturePad) return;
+
     var uri = this.signaturePad.toDataURL(this.type, this.encodingOptions);
     this.dispatchEvent(
       new CustomEvent("image-encode", {
@@ -193,10 +250,12 @@ class LitSignaturePad extends LitElement {
 
   readOnlyChanged() {
     if (!this.signaturePad) return;
-    if (this.readOnly === true) {
+    if (this.readOnly) {
       this.signaturePad.off();
+      this.clearButton.classList.add("disabled");
     } else {
       this.signaturePad.on();
+      this.clearButton.classList.remove("disabled");
     }
   }
 
@@ -211,13 +270,25 @@ class LitSignaturePad extends LitElement {
     this.encodeImage();
   }
 
+  clearButtonVisibleChanged() {
+    if (!this.signaturePad) return;
+    if (this.clearButtonVisible) {
+      this.clearButton.classList.remove("disabled");
+    } else {
+      this.clearButton.classList.add("disabled");
+    }
+  }
+
   resizeSignature() {
-    var dataUrl = this.signaturePad.toDataURL(this.type, this.encoderOptions);
     var ratio = Math.max(window.devicePixelRatio || 1, 1);
     this.signatureCanvas.width = this.signatureCanvas.offsetWidth * ratio;
     this.signatureCanvas.height = this.signatureCanvas.offsetHeight * ratio;
     this.signatureCanvas.getContext("2d").scale(ratio, ratio);
-    this.signaturePad.fromDataURL(dataUrl);
+    this.signaturePad.fromData(this.signaturePad.toData());
+  }
+
+  onClearButton() {
+    this.clear();
   }
 }
 
