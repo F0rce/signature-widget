@@ -46,6 +46,12 @@ public class SignaturePad extends Component implements HasSize {
     this.imageUri = event.getImage();
     this.type = event.getType();
     this.isEmpty = event.isEmpty();
+
+    if (!this.imageUri.equals(event.getImage())) {
+      this.fireEvent(
+          new ValueChangedEvent(
+              event.getSource(), true, event.getImage(), event.getType(), event.isEmpty()));
+    }
   }
 
   /** Clears the widget. */
@@ -363,7 +369,11 @@ public class SignaturePad extends Component implements HasSize {
    */
   public void setImage(String uri) {
     this.getElement().setProperty("img", uri);
+    if (!this.imageUri.equals(uri)) {
+      this.fireEvent(new ValueChangedEvent(this, false, uri, this.type, false));
+    }
     this.imageUri = uri;
+    this.isEmpty = false;
   }
 
   /**
@@ -425,5 +435,17 @@ public class SignaturePad extends Component implements HasSize {
    */
   public boolean isClearButtonVisible() {
     return this.clearButtonVisible;
+  }
+
+  /**
+   * Add a listener to the editor, which listens to when the value changed.
+   *
+   * <p>Check {@link ValueChangedEvent} for all available returned values.
+   *
+   * @param listener {@link ComponentEventListener}
+   * @return {@link Registration}
+   */
+  public Registration addValueChangeListener(ComponentEventListener<ValueChangedEvent> listener) {
+    return this.addListener(ValueChangedEvent.class, listener);
   }
 }
