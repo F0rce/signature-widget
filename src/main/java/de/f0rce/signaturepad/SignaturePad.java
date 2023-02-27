@@ -13,7 +13,7 @@ import com.vaadin.flow.shared.Registration;
 /** @author David "F0rce" Dodlek */
 @Tag("lit-signature-pad")
 @JsModule("./@f0rce/signature-widget.js")
-@NpmPackage(value = "signature_pad", version = "4.0.4")
+@NpmPackage(value = "signature_pad", version = "4.1.5")
 public class SignaturePad extends Component implements HasSize {
 
   private static final long serialVersionUID = -1080064546349497798L;
