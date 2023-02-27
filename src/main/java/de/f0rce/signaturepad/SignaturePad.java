@@ -431,7 +431,7 @@ public class SignaturePad extends Component implements HasSize {
   /**
    * Returns if the clear button is visible.
    *
-   * @return
+   * @return boolean
    */
   public boolean isClearButtonVisible() {
     return this.clearButtonVisible;
