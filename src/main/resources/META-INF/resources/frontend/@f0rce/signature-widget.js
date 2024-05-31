@@ -170,6 +170,10 @@ class LitSignaturePad extends LitElement {
       this.encodeImage();
     });
 
+    if (this.img) {
+      this.signaturePad.fromDataURL(this.img);
+    }
+
     this.signaturePad.clear();
   }
 
