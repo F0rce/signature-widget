@@ -5,19 +5,19 @@
 	<groupId>de.f0rce.signaturepad</groupId>
 	<artifactId>signature-widget</artifactId>
 
-	<version>3.1.0</version>
+	<version>4.0.0</version>
 	<name>signature-widget</name>
 	<description>Lit-Element Wrapper around Signature Pad (https://github.com/szimek/signature_pad) for Vaadin 14+</description>
 
 	<properties>
-		<vaadin.version>23.3.6</vaadin.version>
+		<vaadin.version>25.0.4</vaadin.version>
 
-		<maven.compiler.source>11</maven.compiler.source>
-		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.source>21</maven.compiler.source>
+		<maven.compiler.target>21</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<jetty.version>9.4.28.v20200408</jetty.version>
+		<jetty.version>12.0.15</jetty.version>
 	</properties>
 	<organization>
 		<name>David "F0rce" Dodlek</name>
@@ -58,11 +58,6 @@
 			<id>Vaadin prereleases</id>
 			<url>https://maven.vaadin.com/vaadin-prereleases</url>
 		</repository>
-		<!-- Repository needed for the snapshot versions of Vaadin -->
-		<repository>
-			<id>vaadin-snapshots</id>
-			<url>https://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
-		</repository>
 	</repositories>
 
 	<pluginRepositories>
@@ -78,13 +73,6 @@
 			<id>Vaadin prereleases</id>
 			<url>https://maven.vaadin.com/vaadin-prereleases</url>
 		</pluginRepository>
-		<pluginRepository>
-			<id>vaadin-snapshots</id>
-			<url>https://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</pluginRepository>
 	</pluginRepositories>
 
 	<dependencies>
@@ -92,36 +80,11 @@
 			<groupId>com.vaadin</groupId>
 			<!-- Replace artifactId with vaadin-core to use only free components -->
 			<artifactId>vaadin-core</artifactId>
-			<exclusions>
-				<!-- Webjars are only needed when running in Vaadin 13 compatibility 
-					mode in V14. Your add-on can support npm in the same version mode and V13 
-					compatiblity mode at the same time, or with separate versions. Any V13 version 
-					should work with the compatibility mode in V14. -->
-				<exclusion>
-					<groupId>com.vaadin.webjar</groupId>
-					<artifactId>*</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.webjars.bowergithub.insites</groupId>
-					<artifactId>*</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.webjars.bowergithub.polymer</groupId>
-					<artifactId>*</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.webjars.bowergithub.polymerelements</groupId>
-					<artifactId>*</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.webjars.bowergithub.vaadin</groupId>
-					<artifactId>*</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.webjars.bowergithub.webcomponents</groupId>
-					<artifactId>*</artifactId>
-				</exclusion>
-			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-dev</artifactId>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -137,7 +100,7 @@
 		<dependency>
 			<groupId>io.github.bonigarcia</groupId>
 			<artifactId>webdrivermanager</artifactId>
-			<version>3.8.1</version>
+			<version>6.3.3</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -175,11 +138,11 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
+				<groupId>org.eclipse.jetty.ee10</groupId>
+				<artifactId>jetty-ee10-maven-plugin</artifactId>
 				<version>${jetty.version}</version>
 				<configuration>
-					<scanIntervalSeconds>3</scanIntervalSeconds>
+					<scan>3</scan>
 					<!-- Use test scope because the UI/demo classes are in the test package. -->
 					<useTestScope>true</useTestScope>
 					<supportedPackagings>
@@ -198,7 +161,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-assembly-plugin</artifactId>
-						<version>3.1.0</version>
+						<version>3.3.0</version>
 						<configuration>
 							<appendAssemblyId>false</appendAssemblyId>
 							<descriptors>
@@ -217,7 +180,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-source-plugin</artifactId>
-						<version>3.0.1</version>
+						<version>3.2.1</version>
 						<executions>
 							<execution>
 								<id>attach-sources</id>
@@ -231,7 +194,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>3.0.1</version>
+						<version>3.3.1</version>
 						<executions>
 							<execution>
 								<id>attach-javadocs</id>
@@ -243,13 +206,13 @@
 						</executions>
 						<configuration>
 							<quiet>true</quiet>
-							<additionalparam>-Xdoclint:none</additionalparam>
+							<doclint>none</doclint>
 						</configuration>
 					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-jar-plugin</artifactId>
-						<version>3.1.2</version>
+						<version>3.2.2</version>
 						<configuration>
 							<!-- Generated file that shouldn't be included in add-ons -->
 							<excludes>
@@ -296,8 +259,8 @@
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>org.eclipse.jetty</groupId>
-						<artifactId>jetty-maven-plugin</artifactId>
+						<groupId>org.eclipse.jetty.ee10</groupId>
+						<artifactId>jetty-ee10-maven-plugin</artifactId>
 						<version>${jetty.version}</version>
 						<configuration>
 							<scanIntervalSeconds>0</scanIntervalSeconds>
